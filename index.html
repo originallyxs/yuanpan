@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>源盘 - 一款无服务器的云盘终端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="https://cdn.originallyxs.cc.cd/mdui-1/css/mdui.min.css">
+    <script src="https://cdn.originallyxs.cc.cd/jq.js"></script>
+    <style>
+        * {
+            user-select: none;
+        }
+        .nav {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .nav.active {
+            display: block;
+        }
+        .nav.show {
+            opacity: 1;
+        }
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+        .icon-container {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        .menu-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .nav-item.active .icon-fill {
+            display: block;
+        }
+        .nav-item.active .icon-line {
+            display: none;
+        }
+        .nav-item:not(.active) .icon-fill {
+            display: none;
+        }
+        .nav-item:not(.active) .icon-line {
+            display: block;
+        }
+    </style>
+</head>
+<body class="mdui-drawer-body-left mdui-theme-primary-deep-purple mdui-theme-accent-cyan mdui-appbar-with-toolbar">
+    <div class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+            <div class="mdui-btn mdui-btn-icon mdui-ripple" mdui-drawer="{target: '#drawer'}">
+                <i class="mdui-icon material-icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="currentColor" d="M2.753 18h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5a.75.75 0 0 1-.102-1.494zh18.5zm0-6.497h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5a.75.75 0 0 1-.102-1.494zh18.5zm-.001-6.5h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5A.75.75 0 0 1 2.65 5.01zh18.5z" />
+                    </svg>
+                </i>
+            </div>
+            <div class="mdui-typo-title">源盘</div>
+            <div class="mdui-toolbar-spacer"></div>
+        </div>
+    </div>
+
+    <div class="mdui-container">
+        <div id="nav-1" class="nav active show">
+            <div style="position:relative;left:2%;width:96%;bottom:15px;">
+                <div class="mdui-typo">
+                    <h1>登录</h1>
+                    <div class="mdui-textfield mdui-textfield-color-theme mdui-textfield-floating-label">
+  <label class="mdui-textfield-label">邮箱/用户ID/用户名</label>
+  <input class="mdui-textfield-input" type="text" />
+</div><div class="mdui-textfield mdui-textfield-floating-label">
+  <label class="mdui-textfield-label">密码</label>
+  <input class="mdui-textfield-input" type="password" />
+</div><center><button style="position:relative;width:100%;" class="mdui-btn mdui-color-theme-600 mdui-ripple" onclick="alert('Test')"><i class="mdui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a1 1 0 0 0 .3-.58a.8.8 0 0 0-.001-.29a1 1 0 0 0-.3-.578z" />
+</svg></i> <b>登录</b></button><br><button class="mdui-btn mdui-ripple" onclick="nav(2)">立即注册</button> | <button class="mdui-btn mdui-ripple" onclick="nav(3)">忘记密码</button></center>
+                </div></div>
+            
+        </div>
+        <div id="nav-2" class="nav">
+            <h1>页面2 - 回收站</h1>
+        </div>
+        <div id="nav-3" class="nav">
+            <h1>页面3 - 设置</h1>
+        </div>
+        <div id="nav-4" class="nav">
+            <h1>页面4</h1>
+        </div>
+        <div id="nav-5" class="nav">
+            <h1>页面5</h1>
+        </div>
+        <div id="nav-6" class="nav">
+            <div class="mdui-typo"><h1>商店</h1>
+            <h2>会员购买</h2>
+            <div style="display: flex;gap: 12px;">
+                <div class="mdui-shadow-8" style="flex: 1; padding: 20px; text-align: center;">
+                  <div style="left:2%;width:100%;bottom:10px;">
+                    <div class="mdui-typo">
+                      <h3>VIP1</h3>
+                      <ul><li>存储空间扩容至 48GB。</li></ul>
+                      <b>月付</b><h3 class="mdui-text-color-theme">$1 | ￥6</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>年付</b><h3 class="mdui-text-color-theme">$7 | ￥50</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>终身</b><h3 class="mdui-text-color-theme">$17 | ￥120</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="mdui-shadow-8" style="flex: 1; padding: 20px; text-align: center;"><div style="left:2%;width:100%;bottom:10px;">
+                    <div class="mdui-typo">
+                      <h3>VIP2</h3>
+                      <ul><li>存储空间扩容至 64GB。</li></ul>
+                      <b>月付</b><h3 class="mdui-text-color-theme">$1.5 | ￥9</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>年付</b><h3 class="mdui-text-color-theme">$11 | ￥78</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>终身</b><h3 class="mdui-text-color-theme">$28 | ￥198</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                    </div>
+                  </div></div>
+                <div class="mdui-shadow-8" style="flex: 1; padding: 20px; text-align: center;"><div style="left:2%;width:100%;bottom:10px;">
+                    <div class="mdui-typo">
+                      <h3>VIP3</h3>
+                      <ul><li>存储空间扩容至 72GB。</li></ul>
+                      <b>月付</b><h3 class="mdui-text-color-theme">$2 | ￥12</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>年付</b><h3 class="mdui-text-color-theme">$14 | ￥98</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>终身</b><h3 class="mdui-text-color-theme">$38 | ￥268</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                    </div>
+                  </div></div>
+            </div>
+            <h2>容量包购买</h2><div class="mdui-shadow-8" style="flex: 1; padding: 20px; text-align: center;"><div style="left:2%;width:100%;bottom:10px;">
+                    <div class="mdui-typo">
+                      <h3>100GB 容量包</h3>
+                      <ul><li>存储空间扩容 100GB。</li></ul>
+                      <b>月付</b><h3 class="mdui-text-color-theme">$1.1 | ￥8</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                      <b>年付</b><h3 class="mdui-text-color-theme">$9.7 | ￥68</h3><button class="mdui-btn mdui-ripple mdui-color-theme-600" style="width:100%;">购买</button>
+                    </div>
+                  </div></div>
+            </div>
+        </div>
+        <div id="nav-7" class="nav">
+            <h1>页面7</h1>
+        </div>
+        <div id="nav-8" class="nav">
+            <h1>页面8</h1>
+        </div>
+        <div id="nav-9" class="nav">
+            <h1>页面9</h1>
+        </div>
+        <div id="nav-10" class="nav">
+            <h1>页面10</h1>
+        </div>
+        <div id="nav-11" class="nav">
+            <div class="mdui-typo"><h1>权益介绍</h1><p>为了保证资源按需分配，我们设定了不同的身份以及其在源盘的权益。</p><p>用户可以在「商店」标签购买更高级别的权益。</p>
+            <h2>VIP 0</h2><p>注册即成为 V0。<br>该用户组享有以下权益：<br><ul><li>24GB 超大存储空间；</li><li>无限提取文件直链；</li><li>1 个国内完全可访问的存储介质。</li></ul></p>
+            <h2>VIP 1</h2><p>V1 的定价可以在「商店」中找到。你也可以邀请 1 个新账号加入源盘以获得为期 60 天的 VIP1 权益。<br>该用户组享有以下权益：<br><ul><li>48GB 超大存储空间；</li><li>V0 的所有权益。</li></ul></p>
+            <h2>VIP 2</h2><p>V2 的定价可以在「商店」中找到。<br>该用户组享有以下权益：<br><ul><li>64GB 超大存储空间；</li><li>V1 的所有权益。</li></ul></p>
+            <h2>VIP 3</h2><p>V3 的定价可以在「商店」中找到。<br>该用户组享有以下权益：<br><ul><li>72GB 超大存储空间；</li><li>V2 的所有权益。</li></ul></p>
+            <h2>SVIP 1</h2><p>成为 SV1 需要邀请 3 个新账号加入源盘。每邀请 3 个账号可获得 30 天的 SV1 权益。<br>该用户组享有以下权益：<br><ul><li>96GB 超大存储空间；</li><li>2 个国内存储介质。</li><li>V3 的所有权益。</li></ul></p>
+            <h2>SVIP 2</h2><p>成为 SV2 需要您加入初源联盟工作室。在 7 个工作日内，将发放永久的 SV2 权益。<br>该用户组享有以下权益：<br><ul><li>192GB 超大存储空间；</li><li>SV1 的所有权益。</li></ul></p>
+            <h2>SVIP 3</h2><p>成为 SV3 需要您加入初源联盟工作室，且再邀请 1 个账号加入工作室。在 7 个工作日内，将发放永久的 SV3 权益。<br>该用户组享有以下权益：<br><ul><li>256GB 超大存储空间；</li><li>SV2 的所有权益。</li></ul></p>
+            <h2>MVIP 1</h2><p>成为 MV1 需要您当选初源联盟工作室副室长。在 7 个工作日内，将发放永久的 MV1 权益。<br>该用户组享有以下权益：<br><ul><li>512GB 超大存储空间；</li><li>SV3 的所有权益。</li></ul></p>
+            <h2>MVIP 2</h2><p>成为 MV2 需要您当选初源联盟工作室室长。在 7 个工作日内，将发放永久的 MV2 权益。<br>该用户组享有以下权益：<br><ul><li>768GB 超大存储空间；</li><li>MV1 的所有权益。</li></ul></p>
+            <h2>MVIP 3</h2><p>成为 MV3 需要您作为初源联盟工作室创始人之身份。拥有永久的 MV3 权益。<br>该用户组享有以下权益：<br><ul><li>1TB 超大存储空间；</li><li>完整的管理员权限；</li><li>MV2 的所有权益。</li></ul></p>
+            </div>
+        </div>
+        <div id="nav-12" class="nav">
+            <h1>页面12</h1>
+        </div>
+    </div>
+
+    <button class="mdui-fab mdui-color-theme-600 mdui-ripple mdui-fab-fixed">
+        <i class="mdui-icon material-icons">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path fill="currentColor" d="M12 3.25a.75.75 0 0 1 .75.75v7.25H20a.75.75 0 0 1 0 1.5h-7.25V20a.75.75 0 0 1-1.5 0v-7.25H4a.75.75 0 0 1 0-1.5h7.25V4a.75.75 0 0 1 .75-.75" />
+            </svg>
+        </i>
+    </button>
+
+    <div class="mdui-drawer mdui-drawer-left mdui-shadow-10" id="drawer">
+        <div class="mdui-ripple" style="width: 100%;height: 144px;">
+            <b style="position: absolute;top: 116px;left: 16px;">2026年6月28日启动 | Demo 1</b>
+        </div>
+        <ul class="mdui-list">
+            <li class="mdui-list-item mdui-ripple nav-item active" data-nav="1" onclick="nav(1)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M11 17.5a6.47 6.47 0 0 1 1.022-3.5h-7.77a2.25 2.25 0 0 0-2.248 2.25v.919c0 .572.178 1.13.51 1.596C4.056 20.929 6.58 22 10 22q1.397 0 2.593-.238A6.48 6.48 0 0 1 11 17.5M10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10M23 17.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0m-4.646-2.853a.5.5 0 0 0-.707.707L19.293 17H15a.5.5 0 1 0 0 1h4.293l-1.646 1.647a.5.5 0 0 0 .707.707l2.5-2.5A.5.5 0 0 0 21 17.51v-.01a.5.5 0 0 0-.15-.357z" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M11.314 15.5a6.5 6.5 0 0 1 .708-1.5h-7.77a2.25 2.25 0 0 0-2.248 2.25v.577c0 .892.318 1.756.898 2.435c1.566 1.834 3.952 2.74 7.098 2.74q1.398 0 2.593-.24a6.5 6.5 0 0 1-.914-1.366A13 13 0 0 1 10 20.5c-2.738 0-4.704-.745-5.957-2.213a2.25 2.25 0 0 1-.54-1.461v-.578a.75.75 0 0 1 .75-.749zM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7M23 17.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0m-4.646-2.853a.5.5 0 0 0-.707.707L19.293 17H15a.5.5 0 1 0 0 1h4.293l-1.646 1.647a.5.5 0 0 0 .707.707l2.5-2.5A.5.5 0 0 0 21 17.51v-.01a.5.5 0 0 0-.15-.357z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">登录</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="2" onclick="nav(2)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M11 17.5a6.47 6.47 0 0 1 1.023-3.5h-7.77a2.25 2.25 0 0 0-2.25 2.25v.919c0 .572.18 1.13.511 1.596C4.056 20.929 6.58 22 10 22q1.399 0 2.592-.24A6.48 6.48 0 0 1 11 17.502m4-10.495a5 5 0 1 0-10 0a5 5 0 0 0 10 0M23 17.5a5.5 5.5 0 1 0-11 0a5.5 5.5 0 0 0 11 0m-5.59-3.492L17.5 14l.09.008a.5.5 0 0 1 .402.402l.008.09V17h2.504l.09.008a.5.5 0 0 1 .402.402l.008.09l-.008.09a.5.5 0 0 1-.402.402l-.09.008H18v2.5l-.008.09a.5.5 0 0 1-.402.402L17.5 21l-.09-.008a.5.5 0 0 1-.402-.402L17 20.5V18h-2.496l-.09-.008a.5.5 0 0 1-.402-.402l-.008-.09l.008-.09a.5.5 0 0 1 .402-.402l.09-.008H17v-2.5l.008-.09a.5.5 0 0 1 .402-.402" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11m-5.477 2a6.5 6.5 0 0 0-.709 1.5H4.253a.75.75 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214q.896 0 1.68-.106c.246.495.553.954.912 1.367q-1.193.24-2.592.24c-3.145 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.25 2.25 0 0 1 4.253 14zm5.477 0l-.09.008a.5.5 0 0 0-.402.402L17 14.5V17h-2.496l-.09.008a.5.5 0 0 0-.402.402l-.008.09l.008.09a.5.5 0 0 0 .402.402l.09.008H17v2.5l.008.09a.5.5 0 0 0 .402.402l.09.008l.09-.008a.5.5 0 0 0 .402-.402L18 20.5V18h2.504l.09-.008a.5.5 0 0 0 .402-.402l.008-.09l-.008-.09a.5.5 0 0 0-.402-.402l-.09-.008H18v-2.5l-.008-.09a.5.5 0 0 0-.402-.402zM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">注册</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="3" onclick="nav(3)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M3 5.75V11c0 5.001 2.958 8.676 8.725 10.948a.75.75 0 0 0 .55 0C18.042 19.676 21 16 21 11V5.75a.75.75 0 0 0-.75-.75c-2.663 0-5.258-.943-7.8-2.85a.75.75 0 0 0-.9 0C9.008 4.057 6.413 5 3.75 5a.75.75 0 0 0-.75.75M13.995 11a2 2 0 0 1-1.245 1.852v2.398a.75.75 0 0 1-1.5 0v-2.394A2 2 0 1 1 13.995 11" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M13.995 11a2 2 0 0 1-1.245 1.852v2.398a.75.75 0 0 1-1.5 0v-2.394A2 2 0 1 1 13.995 11M3.75 5a.75.75 0 0 0-.75.75V11c0 5.001 2.958 8.676 8.725 10.948a.75.75 0 0 0 .55 0C18.042 19.676 21 16 21 11V5.75a.75.75 0 0 0-.75-.75c-2.663 0-5.258-.943-7.8-2.85a.75.75 0 0 0-.9 0C9.008 4.057 6.413 5 3.75 5m.75 6V6.478c2.577-.152 5.08-1.09 7.5-2.8c2.42 1.71 4.923 2.648 7.5 2.8V11c0 4.256-2.453 7.379-7.5 9.442C6.953 18.379 4.5 15.256 4.5 11" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">忘记密码</div>
+            </li>
+            <li class="mdui-divider"></li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="4" onclick="nav(4)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M2 8V6.25A3.25 3.25 0 0 1 5.25 3h2.879a2.25 2.25 0 0 1 1.59.659l1.531 1.53L8.659 7.78a.75.75 0 0 1-.53.22zm0 1.5v8.25A3.25 3.25 0 0 0 5.25 21h13.5A3.25 3.25 0 0 0 22 17.75v-9a3.25 3.25 0 0 0-3.25-3.25h-5.69L9.72 8.841a2.25 2.25 0 0 1-1.591.659z" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M3.5 6.25V8h4.629a.75.75 0 0 0 .53-.22l1.53-1.53l-1.53-1.53a.75.75 0 0 0-.53-.22H5.25A1.75 1.75 0 0 0 3.5 6.25m-1.5 0A3.25 3.25 0 0 1 5.25 3h2.879a2.25 2.25 0 0 1 1.59.659L11.562 5.5h7.189A3.25 3.25 0 0 1 22 8.75v9A3.25 3.25 0 0 1 18.75 21H5.25A3.25 3.25 0 0 1 2 17.75zM3.5 9.5v8.25c0 .966.784 1.75 1.75 1.75h13.5a1.75 1.75 0 0 0 1.75-1.75v-9A1.75 1.75 0 0 0 18.75 7h-7.19L9.72 8.841a2.25 2.25 0 0 1-1.591.659z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">我的文件</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="5" onclick="nav(5)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M17 3.002a2.998 2.998 0 1 1-2.148 5.09l-5.457 3.12a3 3 0 0 1 0 1.577l5.458 3.119a2.998 2.998 0 1 1-.746 1.304l-5.457-3.12a2.998 2.998 0 1 1 0-4.184l5.457-3.12A3 3 0 0 1 17 3.003" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M17 2.498a3.502 3.502 0 1 1-2.597 5.851l-4.558 2.605a3.5 3.5 0 0 1 0 2.092l4.557 2.606a3.502 3.502 0 1 1-.745 1.302L9.1 14.347a3.502 3.502 0 1 1 0-4.698l4.557-2.604A3.502 3.502 0 0 1 17 2.498m0 13.5a2.002 2.002 0 1 0 0 4.004a2.002 2.002 0 0 0 0-4.004m-10.498-6a2.002 2.002 0 1 0 0 4.004a2.002 2.002 0 0 0 0-4.004m10.498-6a2.002 2.002 0 1 0 0 4.004a2.002 2.002 0 0 0 0-4.004" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">我的分享</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="6" onclick="nav(6)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M7 5v2H5.5A1.5 1.5 0 0 0 4 8.5V18a4 4 0 0 0 4 4h6.01A4.23 4.23 0 0 1 13 19.25V5c0-.334-.055-.656-.156-.956A1.5 1.5 0 0 1 15.5 5v2h-1v12.25a2.75 2.75 0 1 0 5.5 0V8.5A1.5 1.5 0 0 0 18.5 7H17V5a3 3 0 0 0-5-2.236A3 3 0 0 0 7 5m1.5 0a1.5 1.5 0 1 1 3 0v2h-3z" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M7 7V5a3 3 0 0 1 5-2.236A3 3 0 0 1 17 5v2h1.5A1.5 1.5 0 0 1 20 8.5v10.005A3.495 3.495 0 0 1 16.505 22H8a4 4 0 0 1-4-4V8.5A1.5 1.5 0 0 1 5.5 7zm6.635 13.5a3.5 3.5 0 0 1-.625-1.995V8.5H5.5V18A2.5 2.5 0 0 0 8 20.5zM11.5 7V5a1.5 1.5 0 0 0-3 0v2zM13 7h2.5V5a1.5 1.5 0 0 0-2.656-.956c.101.3.156.622.156.956zm1.51 11.505a1.995 1.995 0 0 0 3.99 0V8.5h-3.99z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">商店</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="7" onclick="nav(7)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M16.5 2a5.5 5.5 0 0 0-5.348 6.789L2.841 17.1a2.871 2.871 0 1 0 4.06 4.06l4.115-4.113a6.5 6.5 0 0 1 9.172-5.467A5.5 5.5 0 0 0 22 7.5a5.5 5.5 0 0 0-.282-1.745a.75.75 0 0 0-1.242-.292l-2.444 2.444a.75.75 0 0 1-1.06 0l-.879-.878a.75.75 0 0 1 0-1.06l2.445-2.445a.75.75 0 0 0-.293-1.241A5.5 5.5 0 0 0 16.5 2m-2.223 11.976a2 2 0 0 1-1.441 2.496l-.584.144a5.7 5.7 0 0 0 .006 1.808l.54.13a2 2 0 0 1 1.45 2.51l-.187.631c.44.386.94.699 1.485.922l.493-.519a2 2 0 0 1 2.899 0l.499.525a5.3 5.3 0 0 0 1.482-.913l-.198-.686a2 2 0 0 1 1.442-2.496l.583-.144a5.7 5.7 0 0 0-.006-1.808l-.54-.13a2 2 0 0 1-1.449-2.51l.186-.63a5.3 5.3 0 0 0-1.484-.922l-.493.518a2 2 0 0 1-2.9 0l-.498-.525c-.544.22-1.044.53-1.483.912zM17.5 19c-.8 0-1.45-.672-1.45-1.5S16.7 16 17.5 16s1.45.672 1.45 1.5S18.3 19 17.5 19" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M16.5 2a5.5 5.5 0 0 0-5.348 6.789L2.841 17.1a2.871 2.871 0 1 0 4.06 4.06l4.115-4.113a6.47 6.47 0 0 1 1.172-3.293L5.84 20.1a1.371 1.371 0 0 1-1.94-1.94l8.624-8.622a.75.75 0 0 0 .18-.768a4 4 0 0 1 4.213-5.248l-1.844 1.844a1.25 1.25 0 0 0 0 1.768l1.793 1.793a1.25 1.25 0 0 0 1.767 0l1.845-1.845q.021.207.021.418a4 4 0 0 1-2.162 3.554a6.5 6.5 0 0 1 1.85.526A5.5 5.5 0 0 0 22 7.5c0-.767-.157-1.498-.442-2.163a.75.75 0 0 0-1.22-.236L17.75 7.69l-1.439-1.44L18.9 3.662a.75.75 0 0 0-.235-1.22A5.5 5.5 0 0 0 16.5 2m-2.223 11.976a2 2 0 0 1-1.441 2.496l-.584.144a5.7 5.7 0 0 0 .006 1.808l.54.13a2 2 0 0 1 1.45 2.51l-.187.631c.44.386.94.699 1.485.922l.493-.519a2 2 0 0 1 2.899 0l.499.525a5.3 5.3 0 0 0 1.482-.913l-.198-.686a2 2 0 0 1 1.442-2.496l.583-.144a5.7 5.7 0 0 0-.006-1.808l-.54-.13a2 2 0 0 1-1.449-2.51l.186-.63a5.3 5.3 0 0 0-1.484-.922l-.493.518a2 2 0 0 1-2.9 0l-.498-.525c-.544.22-1.044.53-1.483.912zM17.5 19c-.8 0-1.45-.672-1.45-1.5S16.7 16 17.5 16s1.45.672 1.45 1.5S18.3 19 17.5 19" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">管理面板</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="8" onclick="nav(8)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M12.012 2.25c.734.008 1.465.093 2.182.253a.75.75 0 0 1 .582.649l.17 1.527a1.384 1.384 0 0 0 1.927 1.116l1.4-.615a.75.75 0 0 1 .85.174a9.8 9.8 0 0 1 2.205 3.792a.75.75 0 0 1-.272.825l-1.241.916a1.38 1.38 0 0 0 0 2.226l1.243.915a.75.75 0 0 1 .272.826a9.8 9.8 0 0 1-2.204 3.792a.75.75 0 0 1-.849.175l-1.406-.617a1.38 1.38 0 0 0-1.926 1.114l-.17 1.526a.75.75 0 0 1-.571.647a9.5 9.5 0 0 1-4.406 0a.75.75 0 0 1-.572-.647l-.169-1.524a1.382 1.382 0 0 0-1.925-1.11l-1.406.616a.75.75 0 0 1-.85-.175a9.8 9.8 0 0 1-2.203-3.796a.75.75 0 0 1 .272-.826l1.243-.916a1.38 1.38 0 0 0 0-2.226l-1.243-.914a.75.75 0 0 1-.272-.826a9.8 9.8 0 0 1 2.205-3.792a.75.75 0 0 1 .85-.174l1.4.615a1.387 1.387 0 0 0 1.93-1.118l.17-1.526a.75.75 0 0 1 .583-.65q1.074-.238 2.201-.252M12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M12.012 2.25c.734.008 1.465.093 2.182.253a.75.75 0 0 1 .582.649l.17 1.527a1.384 1.384 0 0 0 1.927 1.116l1.4-.615a.75.75 0 0 1 .85.174a9.8 9.8 0 0 1 2.205 3.792a.75.75 0 0 1-.272.825l-1.241.916a1.38 1.38 0 0 0 0 2.226l1.243.915a.75.75 0 0 1 .272.826a9.8 9.8 0 0 1-2.204 3.792a.75.75 0 0 1-.849.175l-1.406-.617a1.38 1.38 0 0 0-1.926 1.114l-.17 1.526a.75.75 0 0 1-.571.647a9.5 9.5 0 0 1-4.406 0a.75.75 0 0 1-.572-.647l-.169-1.524a1.382 1.382 0 0 0-1.925-1.11l-1.406.616a.75.75 0 0 1-.85-.175a9.8 9.8 0 0 1-2.203-3.796a.75.75 0 0 1 .272-.826l1.243-.916a1.38 1.38 0 0 0 0-2.226l-1.243-.914a.75.75 0 0 1-.272-.826a9.8 9.8 0 0 1 2.205-3.792a.75.75 0 0 1 .85-.174l1.4.615a1.387 1.387 0 0 0 1.93-1.118l.17-1.526a.75.75 0 0 1 .583-.65q1.074-.238 2.201-.252m0 1.5a9 9 0 0 0-1.354.117l-.11.977A2.886 2.886 0 0 1 6.526 7.17l-.899-.394A8.3 8.3 0 0 0 4.28 9.092l.797.587a2.88 2.88 0 0 1 .001 4.643l-.799.588c.32.842.776 1.626 1.348 2.322l.905-.397a2.882 2.882 0 0 1 4.017 2.318l.109.984c.89.15 1.799.15 2.688 0l.11-.984a2.88 2.88 0 0 1 4.018-2.322l.904.396a8.3 8.3 0 0 0 1.348-2.318l-.798-.588a2.88 2.88 0 0 1-.001-4.643l.797-.587a8.3 8.3 0 0 0-1.348-2.317l-.897.393a2.884 2.884 0 0 1-4.023-2.324l-.109-.976a9 9 0 0 0-1.334-.117M12 8.25a3.75 3.75 0 1 1 0 7.5a3.75 3.75 0 0 1 0-7.5m0 1.5a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">个人设置</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="9" onclick="nav(9)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<g fill="currentColor">
+		<path d="M12 2v6a2 2 0 0 0 2 2h6v10a2 2 0 0 1-2 2h-6.81A6.5 6.5 0 0 0 4 11.498V4a2 2 0 0 1 2-2z" />
+		<path d="M13.5 2.5V8a.5.5 0 0 0 .5.5h5.5zm-1.5 15a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M3.5 17a.5.5 0 0 0 0 1h4.793l-1.647 1.646a.5.5 0 0 0 .708.708l2.5-2.5a.5.5 0 0 0 0-.708l-2.5-2.5a.5.5 0 0 0-.708.708L8.293 17z" />
+	</g>
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M18.5 20a.5.5 0 0 1-.5.5h-5.732A6.5 6.5 0 0 1 11.19 22H18a2 2 0 0 0 2-2V9.828a2 2 0 0 0-.586-1.414l-5.829-5.828A2.05 2.05 0 0 0 12.172 2H6a2 2 0 0 0-2 2v7.498a6.5 6.5 0 0 1 1.5-.422V4a.5.5 0 0 1 .5-.5h6V8a2 2 0 0 0 2 2h4.5zm-5-15.379L17.378 8.5H14a.5.5 0 0 1-.5-.5zM12 17.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M3.5 17a.5.5 0 0 0 0 1h4.793l-1.647 1.646a.5.5 0 0 0 .708.708l2.5-2.5a.5.5 0 0 0 0-.708l-2.5-2.5a.5.5 0 0 0-.708.708L8.293 17z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">用户协议</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="10" onclick="nav(10)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<g fill="currentColor">
+		<path d="M12 2v6a2 2 0 0 0 2 2h6v10a2 2 0 0 1-2 2h-6.81A6.5 6.5 0 0 0 4 11.498V4a2 2 0 0 1 2-2z" />
+		<path d="M13.5 2.5V8a.5.5 0 0 0 .5.5h5.5zm-1.5 15a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M3.5 17a.5.5 0 0 0 0 1h4.793l-1.647 1.646a.5.5 0 0 0 .708.708l2.5-2.5a.5.5 0 0 0 0-.708l-2.5-2.5a.5.5 0 0 0-.708.708L8.293 17z" />
+	</g>
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M18.5 20a.5.5 0 0 1-.5.5h-5.732A6.5 6.5 0 0 1 11.19 22H18a2 2 0 0 0 2-2V9.828a2 2 0 0 0-.586-1.414l-5.829-5.828A2.05 2.05 0 0 0 12.172 2H6a2 2 0 0 0-2 2v7.498a6.5 6.5 0 0 1 1.5-.422V4a.5.5 0 0 1 .5-.5h6V8a2 2 0 0 0 2 2h4.5zm-5-15.379L17.378 8.5H14a.5.5 0 0 1-.5-.5zM12 17.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M3.5 17a.5.5 0 0 0 0 1h4.793l-1.647 1.646a.5.5 0 0 0 .708.708l2.5-2.5a.5.5 0 0 0 0-.708l-2.5-2.5a.5.5 0 0 0-.708.708L8.293 17z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">隐私政策</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="11" onclick="nav(11)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M12 2v6a2 2 0 0 0 2 2h6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1.5.5V8a.5.5 0 0 0 .5.5h5.5z" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.828a2 2 0 0 0-.586-1.414l-5.828-5.828A2 2 0 0 0 12.172 2zm-.5 2a.5.5 0 0 1 .5-.5h6V8a2 2 0 0 0 2 2h4.5v10a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5zm11.88 4.5H14a.5.5 0 0 1-.5-.5V4.62z" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">权益介绍</div>
+            </li>
+            <li class="mdui-list-item mdui-ripple nav-item" data-nav="12" onclick="nav(12)">
+                <div class="mdui-list-item-icon">
+                    <div class="icon-container">
+                        <div class="menu-icon icon-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M12.002 1.999c5.523 0 10.001 4.478 10.001 10.002c0 5.523-4.478 10.001-10.001 10.001C6.478 22.002 2 17.524 2 12.001C2 6.477 6.478 1.999 12.002 1.999M12 10.5a.75.75 0 0 0-.75.75v5a.75.75 0 0 0 1.5 0v-5a.75.75 0 0 0-.75-.75M12 9a1 1 0 1 0 0-2a1 1 0 0 0 0 2" />
+</svg>
+
+                        </div>
+                        <div class="menu-icon icon-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<path fill="currentColor" d="M12.002 1.999c5.523 0 10.001 4.478 10.001 10.002c0 5.523-4.478 10.001-10.001 10.001C6.478 22.002 2 17.524 2 12.001C2 6.477 6.478 1.999 12.002 1.999m0 1.5a8.502 8.502 0 1 0 0 17.003a8.502 8.502 0 0 0 0-17.003M12 10.5a.75.75 0 0 1 .75.75v5a.75.75 0 0 1-1.5 0v-5a.75.75 0 0 1 .75-.75M12 9a1 1 0 1 0 0-2a1 1 0 0 0 0 2" />
+</svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-list-item-content">关于源盘</div>
+            </li>
+            <li class="mdui-divider"></li>
+            <li class="mdui-list-item mdui-ripple"><div style="width: 100%;height: 96px;">
+                <div style="position: absolute;top: 0px;"><h3>存储使用情况</h3></div>
+                <div class="mdui-progress" style="width: 100%;left:0%;top:50px;">
+                    <div class="mdui-progress-indeterminate" style="width:0%;"></div>
+                </div>
+                <b style="position: absolute;top: 70px;left: 5%;">
+                    <script>document.write("登录再查看存储空间")</script>
+                </b>
+            </div></li><li class="mdui-divider"></li><li class="mdui-list-item mdui-ripple mdui-ripple-red-50 mdui-text-color-white" style="background:#840d0d;"><a href="https://keepandroidopen.org/" target="_blank"><div style="width: 100%;height: 96px;">
+                <div style="position: absolute;top: 0px;"><h3>保卫开放的安卓生态</h3></div>
+                <b style="position: absolute;top: 45px;left: 5%; word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.6;">
+                    安卓<span id="ac">（时间加载中）</span>成为封闭平台。点击查看详情。
+                </b>
+            </div></a></li><li class="mdui-divider"></li>
+            <div class="mdui-ripple" style="width: 100%;height: 360px;">
+                <div style="position: absolute;top: 5px;left: 5%;right:5%;word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.6;">
+                    <h3>公告</h3>
+                    <p>源盘为免费文件存储服务，<b>不保证数据的完整性与安全性</b>，重要文件请在其他平台做好备份。</p>
+                    <p>本平台严格遵守相关法律法规，对违规内容<b>持零容忍态度</b>。用户不得上传违法违规、侵权涉敏及违反公序良俗的文件，一经发现<b>将删除全部违规内容并永久封禁账号，必要时配合相关部门调查</b>。</p>
+                </div>
+            </div>
+            <li class="mdui-divider"></li>
+            <li class="mdui-list-item mdui-ripple" onclick="wd.finishAndRemoveTask()">
+                <i class="mdui-list-item-icon mdui-icon material-icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="currentColor" d="M6.25 3A3.25 3.25 0 0 0 3 6.25v11.5A3.25 3.25 0 0 0 6.25 21h9a.75.75 0 0 0 0-1.5h-9a1.75 1.75 0 0 1-1.75-1.75V6.25c0-.966.784-1.75 1.75-1.75h9a.75.75 0 0 0 0-1.5zm11.28 4.22a.75.75 0 1 0-1.06 1.06l2.97 2.97H8.75a.75.75 0 0 0 0 1.5h10.69l-2.97 2.97a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06z" />
+                    </svg>
+                </i>
+                <div class="mdui-list-item-content">退出</div>
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.originallyxs.cc.cd/mdui-1/js/mdui.min.js"></script>
+    <script>
+const fabShowPages = [1];
+function initDarkMode() {
+    const mediaDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const body = document.body;
+    let useWdTheme = false;
+    let wdDark = false;
+
+    // 优先读取wd客户端暗色配置
+    if (typeof wd !== 'undefined' && typeof wd.isDarkMode === 'function') {
+        wdDark = wd.isDarkMode();
+        useWdTheme = true;
+    }
+
+    if (useWdTheme) {
+        // wd环境存在，使用wd主题
+        if (wdDark) {
+            body.classList.add('mdui-theme-layout-dark');
+        } else {
+            body.classList.remove('mdui-theme-layout-dark');
+        }
+    } else {
+        // 无wd环境，使用浏览器系统暗色
+        const localTheme = localStorage.getItem('sourceDiskTheme');
+        if (localTheme === 'dark') {
+            body.classList.add('mdui-theme-layout-dark');
+        } else if (localTheme === 'light') {
+            body.classList.remove('mdui-theme-layout-dark');
+        } else {
+            if (mediaDark.matches) {
+                body.classList.add('mdui-theme-layout-dark');
+            } else {
+                body.classList.remove('mdui-theme-layout-dark');
+            }
+        }
+    }
+}
+// 页面初始化执行
+initDarkMode();
+
+// wd暗色切换事件监听
+if (typeof wd !== 'undefined' && typeof wd.regDarkModeChangeEvent === 'function') {
+    wd.regDarkModeChangeEvent('initDarkMode');
+}
+
+// 浏览器系统暗色切换监听（仅wd不存在时生效）
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (typeof wd === 'undefined' || typeof wd.isDarkMode !== 'function') {
+        if (!localStorage.getItem('sourceDiskTheme')) {
+            initDarkMode();
+        }
+    }
+});
+
+let isNavAnimating = false
+function nav(id) {
+    if (isNavAnimating) return
+    const targetId = Number(id);
+    if (isNaN(targetId) || targetId <= 0) return;
+    const currentNav = document.querySelector('.nav.active')
+    const targetNav = document.getElementById('nav-' + targetId)
+    if (!targetNav) return;
+    if (currentNav === targetNav) {
+        if (typeof mdui !== 'undefined') {
+            mdui('#drawer').drawer('close')
+        }
+        return
+    }
+    isNavAnimating = true
+    const navItems = document.querySelectorAll('.nav-item');
+    if (navItems && navItems.length) {
+        navItems.forEach(item => {
+            item.classList.remove('active')
+        })
+    }
+    const activeNavItem = document.querySelector(`.nav-item[data-nav="${targetId}"]`);
+    if (activeNavItem) {
+        activeNavItem.classList.add('active')
+    }
+    currentNav.classList.remove('show')
+    setTimeout(() => {
+        currentNav.classList.remove('active')
+        targetNav.classList.add('active')
+        void targetNav.offsetWidth
+        targetNav.classList.add('show')
+        setTimeout(() => {
+            isNavAnimating = false
+        }, 150)
+    }, 150)
+    if (typeof mdui !== 'undefined') {
+        mdui('#drawer').drawer('close')
+    }
+    const fabBtn = document.querySelector('.mdui-fab');
+    if (fabBtn) {
+        if (fabShowPages.includes(targetId)) {
+            fabBtn.classList.remove('mdui-fab-hide');
+        } else {
+            fabBtn.classList.add('mdui-fab-hide');
+        }
+    }
+}
+
+// 兜底wd退出方法
+if (typeof wd === 'undefined' || typeof wd.finishAndRemoveTask !== 'function') {
+    window.wd = window.wd || {};
+    wd.finishAndRemoveTask = function () {
+        alert('退出功能未适配当前环境');
+    }
+}
+
+// jQuery兜底
+if (typeof $ === 'undefined') {
+    window.$ = function () {
+        return {
+            addClass: () => { },
+            removeClass: () => { }
+        }
+    }
+}
+
+// mdui兜底
+if (typeof mdui === 'undefined') {
+    window.mdui = function () {
+        return {
+            drawer: () => { }
+        }
+    }
+}
+
+// 安卓倒计时模块
+(function AndroidCountdownNS() {
+    const targetTime = new Date("2026-09-01 08:00:00").getTime();
+    const countDom = document.getElementById("ac");
+    function updateTimer() {
+        if (!countDom) return;
+        const now = Date.now();
+        let diff = targetTime - now;
+        if (diff <= 0) {
+            countDom.textContent = "已";
+            return;
+        }
+        const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const sec = Math.floor((diff % (1000 * 60)) / 1000);
+        countDom.textContent = `将在 ${day}天 ${hour}小时 ${min}分钟 ${sec}秒后`;
+    }
+    updateTimer();
+    setInterval(updateTimer, 1000);
+})();
+
+    </script>
+</body>
+</html>
